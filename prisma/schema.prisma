@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum ServiceType {
+  DELIVERY
+  PICK_UP
+  PAYMENT
+}
+
+model Lead {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  mobile    String
+  postcode  String
+  createdAt DateTime @default(now())
+
+  services LeadService[]
+}
+
+model LeadService {
+  id   Int         @id @default(autoincrement())
+  type ServiceType
+
+  lead   Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId Int
+}

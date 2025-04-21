@@ -13,7 +13,10 @@ async function bootstrap() {
 
   app.setGlobalPrefix("api");
   app.enableCors();
-  app.use(helmet());
+
+  if (process.env.NODE_ENV === "production") {
+    app.use(helmet());
+  }
 
   app.enableVersioning({
     type: VersioningType.URI,
@@ -23,8 +26,6 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
-      transform: true,
-      transformOptions: { enableImplicitConversion: true },
     })
   );
 

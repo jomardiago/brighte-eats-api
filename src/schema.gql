@@ -1,0 +1,46 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Lead {
+  createdAt: DateTime!
+  email: String!
+  id: Int!
+  mobile: String!
+  name: String!
+  postcode: String!
+  services: [LeadService!]!
+}
+
+type LeadService {
+  id: Int!
+  type: ServiceType!
+}
+
+type Mutation {
+  register(input: RegisterLeadInput!): Lead!
+}
+
+type Query {
+  lead(id: Int!): Lead
+  leads: [Lead!]!
+}
+
+input RegisterLeadInput {
+  email: String!
+  mobile: String!
+  name: String!
+  postcode: String!
+  services: [ServiceType!]!
+}
+
+enum ServiceType {
+  DELIVERY
+  PAYMENT
+  PICK_UP
+}
