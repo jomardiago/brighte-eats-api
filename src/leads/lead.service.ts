@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 
 import { PrismaService } from "../prisma/prisma.service";
 import { RegisterLeadInput } from "./dtos/register-lead.input";
@@ -8,6 +8,18 @@ export class LeadService {
   constructor(private prisma: PrismaService) {}
 
   async register(input: RegisterLeadInput) {
+    const emailHasVoted = await this.prisma.lead.findFirst({
+      where: {
+        email: input.email,
+      },
+    });
+
+    if (emailHasVoted) {
+      throw new BadRequestException(
+        "An interests submission is already created for this email."
+      );
+    }
+
     return this.prisma.lead.create({
       data: {
         ...input,
